@@ -30,7 +30,7 @@ class SendNotificationEmail
 
         $order = $this->orderRepository->getById($created->orderId);
 
-        
+
 
         Notification::route('mail', $order->clientEmail)
             ->notify(new OrderCreatedNotification($order));
