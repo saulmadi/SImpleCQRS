@@ -5,10 +5,13 @@ namespace App\Domain\Sales\Entities;
 use App\Common\AggregateRoot;
 use App\Domain\Sales\Commands\UpdateOrder;
 use App\Domain\Sales\Events\OrderClientInformationUpdated;
+use App\Domain\Sales\Events\OrderCreated;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 class Order extends AggregateRoot
 {
+    use Notifiable;
     //
 
     public $incrementing = false;
@@ -25,11 +28,11 @@ class Order extends AggregateRoot
             $attColl->put('id', Str::orderedUuid()->toString());
         }
 
-        $archivo = parent::crear($attColl->toArray());
+        $order = parent::crear($attColl->toArray());
 
-        $archivo->apply(new OrderCreated($archivo->getKey()));
+        $order->apply(new OrderCreated($order->getKey()));
 
-        return $archivo;
+        return $order;
     }
 
     protected $keyType = 'string';

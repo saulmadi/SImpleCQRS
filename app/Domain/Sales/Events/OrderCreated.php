@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Domain\Sales\Entities;
+namespace App\Domain\Sales\Events;
 
 
 use App\Common\IDomainEvent;
