@@ -9,7 +9,7 @@ import Home from './Home';
 
 import Orders from './Orders';
 
-import CreateOrder from './CreateOrder';
+import FormOrder from './FormOrder';
 
 
 class App extends Component {
@@ -20,7 +20,8 @@ class App extends Component {
             <Container text style={{ marginTop: '7em' }}>
                 <Route path="/" exact component={Home} />
                 <Route path="/orders" component={Orders} />
-                <Route path="/create-orders" component={CreateOrder} />
+                <Route path="/create-orders" component={FormOrder} />
+                <Route path="/update-orders/:orderId" component={FormOrder} />
             </Container>
       </Router>
     );

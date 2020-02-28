@@ -4,12 +4,13 @@ import { Button, Form, Message } from 'semantic-ui-react'
 import { API_BASE_URL } from './Config'
 
 
-class CreateForm extends Component {
+class FormOrder extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            orderId: false,
             clientName: '',
             clientAddress: '',
             clientPhone: '',
@@ -22,6 +23,45 @@ class CreateForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
+
+    componentDidMount(){
+        const { orderId } = this.props.match.params
+        if(orderId){
+            this.getOrder(orderId)
+        }
+    }
+
+    async getOrder(orderId){
+        try {
+            this.setState({isLoading:true});
+
+        const response = await fetch(API_BASE_URL + '/orders?id=' + orderId , {
+            headers: {
+
+            },
+        });
+        const ordersData = await response.json();
+        
+        const order = ordersData.data[0];
+
+        this.setState(
+            {
+                orderId: orderId,
+                clientName: order.clientName,
+                clientAddress: order.clientAddress,
+                clientPhone: order.clientPhone,
+                clientEmail: order.clientEmail,
+                isLoading: false
+        })
+        } catch (error) {
+
+            this.setState({ isLoading: false });
+            console.error(error);
+            
+        }       
+        
+    }
+
 
     handleChange(e) {
         let field = e.target.name;
@@ -38,8 +78,12 @@ class CreateForm extends Component {
             errorMessage: ''
         });
 
-        const response = await fetch(API_BASE_URL + '/orders', {
-            method: 'POST',
+        const orderId = this.state.orderId;
+
+        const urls = orderId ? '/orders/'+orderId: '/orders';
+        const verb = orderId ? 'PUT': 'POST';
+        const response = await fetch(API_BASE_URL + urls, {
+            method: verb,
             headers: {
                 'Content-Type':'application/json',
                 Accept: 'application/json'
@@ -151,7 +195,7 @@ class CreateForm extends Component {
             </Form.Field>
 
            
-            <Button type='submit' loading={this.state.isLoading} primary>Add Order</Button>
+            <Button type='submit' loading={this.state.isLoading} primary>Save Order</Button>
             <Button  loading={this.state.isLoading} onClick={()=>{   this.props.history.goBack(); }} color="red"> Cancel </Button>
         </Form>
         );
@@ -159,4 +203,4 @@ class CreateForm extends Component {
 
 }
 
-export default CreateForm;
+export default FormOrder;

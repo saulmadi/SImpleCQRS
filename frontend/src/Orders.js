@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Message, Table, Button } from 'semantic-ui-react';
+import { Header, Message, Table, Button, Icon } from 'semantic-ui-react';
 
 import { API_BASE_URL } from './Config'
 
@@ -72,7 +72,9 @@ class Orders extends Component {
                                             <td>{order.clientPhone}</td>
                                             <td>{order.clientEmail}</td>
                                             <td>
-                                                Action buttons placeholder
+                                            <Button icon primary onClick={()=>{this.props.history.push('/update-orders/' + order.id) }}>
+                                                <Icon name='edit' />
+                                            </Button>
                                             </td>
                                         </tr>
                             )}
